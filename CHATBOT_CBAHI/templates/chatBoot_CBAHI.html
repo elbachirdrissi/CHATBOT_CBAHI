@@ -1,0 +1,323 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot CBAHI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background-color: #148C76;
+            padding: 1rem;
+        }
+
+        .navbar h2 {
+            color: #F28749;
+            margin: 0;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .logo-box {
+            border: 1px solid transparent;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .chat-area {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: 400px;
+            overflow-y: auto;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+        }
+
+        .message.user {
+            justify-content: flex-start;
+        }
+
+        .message.bot {
+            justify-content: flex-end;
+        }
+
+        .bot-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            align-self: center;
+        }
+
+        .message-content {
+            max-width: 60%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message-content.ltr {
+            text-align: left;
+            direction: ltr;
+        }
+        
+        .message-content.rtl {
+            text-align: right;
+            direction: rtl;
+        }
+
+        .message.user .message-content {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .message.bot .message-content {
+            background-color: #e9ecef;
+            color: black;
+        }
+
+        .message-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .message-box input {
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            padding: 0.8rem 1.5rem;
+            width: 70%;
+            outline: none;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-box button {
+            background-color: #F28749;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.8rem 1.5rem;
+            font-weight: bold;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .message-box button:hover {
+            background-color: #11BFBF;
+        }
+
+        #loading-spinner {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .suggestion-container {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        
+        .suggestion-link {
+            width:40%;
+            display: inline-block;
+            background-color: #148C76;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .suggestion-link:hover {
+            background-color: #11BFBF;
+            transform: scale(1.05);
+            text-decoration: none;
+        }
+        
+        .suggestion-link:active {
+            transform: scale(0.95);
+        }        
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo-box">
+            <img src="{% static 'images/cbahi.png' %}" alt="cbahi" class="img-fluid">
+        </div>
+        <h2>Saudi Central Board for Accreditation of Healthcare Institutions</h4>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Logos -->
+        <div class="logo-container">
+            <div class="logo-box">
+                <img src="{% static 'images/logo.png' %}" alt="logo_1" class="img-fluid">
+            </div>
+            <div class="logo-box">
+                <img src="{% static 'images/logo_2.jpeg' %}" alt="logo_2" class="img-fluid">
+            </div>
+        </div>
+
+        <!-- Titles -->
+        <div class="title-container">
+            <h3>المركز السعودي لاعتماد المنشآت الصحية</h3>
+            <h4>Saudi Central Board for Accreditation of Healthcare Institutions</h4>
+            <p>مرحبا بك في مساعد الذكاء الاصطناعي الخاص بالمركز<br>يمكنكم من خلال المساعد الذكي للمركز الوصول للمعلومات بدقة وسهولة</p>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area">
+            {% if conversation %}
+                {% for message in conversation %}
+                    <div class="message {{ message.sender }}">
+                        <div class="message-content
+                                    {% if message.sender == 'bot' and message.text|slice:":1" in "اأإآبتثجحخدذرزسشصضطظعغفقكلمنهوي" %}
+                                        rtl
+                                    {% else %}
+                                        ltr
+                                    {% endif %}">
+                            {{ message.text }}
+                        </div>
+                        {% if message.sender == 'bot' %}
+                            <img src="{% static 'images/icon_chat_cbahi.ico' %}" alt="Bot Icon" class="bot-icon">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <p class="text-center text-muted">مرحبا بك. ابدأ بالسؤال أو اختر اقتراحًا</p>
+                <div class="text-center suggestion-container">
+                    <a href="#" class="suggestion-link" data-question="ما هي خدمات المركز؟">ما هي خدمات المركز؟</a><br>
+                    <a href="#" class="suggestion-link" data-question="كيف يمكنني التواصل مع المركز؟">كيف يمكنني التواصل مع المركز؟</a><br>
+                    <a href="#" class="suggestion-link" data-question="هل المجلس معتمد من أي هيئات دولية؟">هل المجلس معتمد من أي هيئات دولية؟</a><br>
+                    <a href="#" class="suggestion-link" data-question="هل هناك شروط معينة للتسجيل؟">هل هناك شروط معينة للتسجيل؟</a>
+                </div>
+            {% endif %}
+
+            <div id="loading-spinner" class="text-center" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>جارٍ معالجة استفسارك...</p>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:3%">
+            <form method="POST" action="{% url 'clear_chat' %}" style="width: 15%;">
+                {% csrf_token %}
+                <div class="message-box">
+                    <button type="submit" class="clear-button">امسح المحادثة</button>
+                </div>
+            </form>
+            <form action="{% url 'index' %}" method="GET" style="width: 80%;">
+                <div class="message-box">
+                    {% comment %} <button class="clear-button" type="submit" name="clear_chat" value="true">امسح المحادثة</button> {% endcomment %}
+                    <button class="submit-button" type="submit" name="user_message">إرسال</button>
+                    <input  type="text" name="user_message" placeholder="تفضل بتقديم سؤالك للمساعد الذكي لمركزنا">
+                </div>
+            </form>
+            
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+<script>
+    {% comment %} $(document).on('submit', 'form[action$="clear_chat/"]', function (e) { {% endcomment %}
+    $(document).ready(function () {
+        $('form[action$="clear_chat/"]').on('submit', function (e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function () {
+                // Clear the chat area visually
+                $('.chat-area').html('<p class="text-center text-muted">تم مسح المحادثة بنجاح.</p>'); 
+            });
+        });
+    });
+    
+        $('.suggestion-link').on('click', function (e) {
+            e.preventDefault(); // Prevent default link behavior
+    
+            const question = $(this).data('question'); // Get the question from the link
+            const messageInput = $('input[name="user_message"]'); // Input field for user messages
+    
+            // Automatically send the question as a message
+            messageInput.val(question);
+            $('form[action$="index/"]').trigger('submit'); // Trigger form submission
+        });
+    
+    
+    $(document).ready(function () {
+        
+        $('form[action$="index/"]').on('submit', function (e) {
+            e.preventDefault();
+    
+            const messageInput = $('input[name="user_message"]');
+            const message = messageInput.val().trim();
+    
+            // Prevent sending an empty message
+            if (message === "") {
+                alert("Veuillez saisir un message avant de l'envoyer.");
+                return;
+            }
+    
+            // Show the loading spinner
+            $('#loading-spinner').show();
+            $('.chat-area').scrollTop($('.chat-area')[0].scrollHeight);
+            messageInput.val(''); // Clear the input field
+    
+            
+            // Send the request
+            $.get('', { user_message: message }, function (data) {
+                // Update the chat area with the new messages
+                $('.chat-area').html($(data).find('.chat-area').html());
+                messageInput.val(''); // Clear the input field
+                $('.chat-area').scrollTop($('.chat-area')[0].scrollHeight); // Scroll to the bottom
+            }).always(function () {
+                // Hide the loading spinner after request is complete (success or fail)
+                $('#loading-spinner').hide();
+            });
+        });
+    });
+    
+    
+</script>
+</html>
