@@ -6,5 +6,5 @@ python CHATBOT_CBAHI/manage.py collectstatic --no-input
 python CHATBOT_CBAHI/manage.py migrate
 if [[ $CREATE_SUPERUSER ]];
 then
-  python manage.py createsuperuser --no-input --email "$DJANGO_SUPERUSER_EMAIL"
+  python CHATBOT_CBAHI/manage.py createsuperuser --no-input --email "$DJANGO_SUPERUSER_EMAIL"
 fi
