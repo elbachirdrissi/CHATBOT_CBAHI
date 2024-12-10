@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.staticfiles import finders
 import google.generativeai as genai
+import nltk
+import pandas as pd
 
 file_path = finders.find('data/data.txt')
 if file_path:
@@ -34,6 +36,7 @@ def index(request):
             BOT:
             """
             bot_response = query_gpt(prompt)
+            print(bot_response)
         else:
             bot_response = "لم تكتب شيئا، تفضل بالسؤال"
     

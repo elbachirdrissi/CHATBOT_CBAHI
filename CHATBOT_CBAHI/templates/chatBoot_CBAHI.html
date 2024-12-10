@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -14,32 +13,94 @@
         }
 
         .navbar {
-            background-color: #148C76;
-            padding: 1rem;
+            background: linear-gradient(90deg, #026873, #038C73);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 2rem 1rem;
+            transition: padding 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: none;
         }
-
-        .navbar h2 {
-            color: #F28749;
-            margin: 0;
+        
+        .navbar.shrink {
+            padding: 0.5rem 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .logo-container {
+        
+        .nav-content {
             display: flex;
-            justify-content: center;
-            gap: 2rem;
-            padding: 2rem 0;
-        }
-
-        .logo-box {
-            border: 1px solid transparent;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100px;
-            height: 100px;
-            display: flex;
-            justify-content: center;
+            flex-direction: row; /* Align horizontally */
             align-items: center;
+            justify-content: space-between; /* Space between logos and titles */
+            gap: 1rem;
+            transition: transform 0.3s ease, font-size 0.3s ease;
         }
-
+        
+        .logo-container-2 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nav-logo {
+            width: 80px;
+            height: auto;
+            transition: width 0.3s ease;
+        }
+        
+        .navbar.shrink .nav-logo {
+            width: 40px; /* Smaller logo size */
+        }
+        
+        .title-container {
+            text-align: left;
+            transition: transform 0.3s ease, font-size 0.3s ease;
+        }
+        
+        .nav-title {
+            color: #F26444;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
+            transition: font-size 0.3s ease;
+        }
+        
+        .nav-subtitle {
+            color: #FFF;
+            font-size: 1rem;
+            margin: 0;
+            transition: font-size 0.3s ease;
+        }
+        
+        .navbar.shrink .nav-title {
+            font-size: 1rem; /* Smaller title size */
+        }
+        
+        .navbar.shrink .nav-subtitle {
+            font-size: 0.8rem; /* Smaller subtitle size */
+        }
+        
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-direction: column; /* Stack content vertically */
+                align-items: center;
+            }
+        
+            .title-container {
+                text-align: center;
+            }
+        
+            .nav-title {
+                font-size: 1.2rem;
+            }
+        
+            .nav-subtitle {
+                font-size: 0.9rem;
+            }
+        }
+        
+       
         .title-container {
             text-align: center;
             margin-bottom: 2rem;
@@ -94,7 +155,7 @@
         }
 
         .message.user .message-content {
-            background-color: #007bff;
+            background-color: #026873;
             color: white;
         }
 
@@ -130,9 +191,33 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
+        
         .message-box button:hover {
             background-color: #11BFBF;
+        }
+        
+        .message-box .custom-file-upload {
+            display: inline-block;
+            background-color: #F28749;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .message-box .custom-file-upload:hover {
+            background-color: #11BFBF;
+        }
+        
+        .message-box .custom-file-upload img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            margin-right: 8px; /* Pour espacer l'icône du texte, si nécessaire */
         }
 
         #loading-spinner {
@@ -173,49 +258,41 @@
         
         .suggestion-link:active {
             transform: scale(0.95);
-        }        
+        }
     </style>
 </head>
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo-box">
-            <img src="{% static 'images/cbahi.png' %}" alt="cbahi" class="img-fluid">
+        <div class="navbar-container">
+            <div class="nav-content">
+                <div class="title-container">
+                    <h3 class="nav-title">المركز السعودي لاعتماد المنشآت الصحية</h3>
+                    <h4 class="nav-subtitle">Saudi Central Board for Accreditation of Healthcare Institutions</h4>
+                </div>
+
+                <div class="logo-container-2">
+                    <div class="logo-box-2">
+                        <img src="{% static 'images/cbahi.png' %}" alt="logo_1" class="img-fluid nav-logo">
+                    </div>
+                    <div class="logo-box-2">
+                        <img src="{% static 'images/logo_2.jpeg' %}" alt="logo_2" class="img-fluid nav-logo">
+                    </div>
+                </div>               
+            </div>
         </div>
-        <h2>Saudi Central Board for Accreditation of Healthcare Institutions</h4>
     </nav>
-
+    
     <div class="container mt-4">
-        <!-- Logos -->
-        <div class="logo-container">
-            <div class="logo-box">
-                <img src="{% static 'images/logo.png' %}" alt="logo_1" class="img-fluid">
-            </div>
-            <div class="logo-box">
-                <img src="{% static 'images/logo_2.jpeg' %}" alt="logo_2" class="img-fluid">
-            </div>
-        </div>
-
-        <!-- Titles -->
         <div class="title-container">
-            <h3>المركز السعودي لاعتماد المنشآت الصحية</h3>
-            <h4>Saudi Central Board for Accreditation of Healthcare Institutions</h4>
             <p>مرحبا بك في مساعد الذكاء الاصطناعي الخاص بالمركز<br>يمكنكم من خلال المساعد الذكي للمركز الوصول للمعلومات بدقة وسهولة</p>
         </div>
 
-        <!-- Chat Area -->
         <div class="chat-area">
             {% if conversation %}
                 {% for message in conversation %}
                     <div class="message {{ message.sender }}">
-                        <div class="message-content
-                                    {% if message.sender == 'bot' and message.text|slice:":1" in "اأإآبتثجحخدذرزسشصضطظعغفقكلمنهوي" %}
-                                        rtl
-                                    {% else %}
-                                        ltr
-                                    {% endif %}">
-                            {{ message.text }}
+                        <div class="message-content">
+                            {{ message.text|safe}}
                         </div>
                         {% if message.sender == 'bot' %}
                             <img src="{% static 'images/icon_chat_cbahi.ico' %}" alt="Bot Icon" class="bot-icon">
@@ -240,6 +317,7 @@
                 <p>جارٍ معالجة استفسارك...</p>
             </div>
         </div>
+        
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:3%">
             <form method="POST" action="{% url 'clear_chat' %}" style="width: 15%;">
                 {% csrf_token %}
@@ -247,14 +325,25 @@
                     <button type="submit" class="clear-button">امسح المحادثة</button>
                 </div>
             </form>
+
             <form action="{% url 'index' %}" method="GET" style="width: 80%;">
-                <div class="message-box">
-                    {% comment %} <button class="clear-button" type="submit" name="clear_chat" value="true">امسح المحادثة</button> {% endcomment %}
+                <div class="message-box" style="display: flex; align-items: center; gap: 10px;">           
                     <button class="submit-button" type="submit" name="user_message">إرسال</button>
-                    <input  type="text" name="user_message" placeholder="تفضل بتقديم سؤالك للمساعد الذكي لمركزنا">
+
+                    <input type="file" id="fileUpload" name="file" accept="image/*, .pdf, .doc, .docx" style="display: none;">
+                    <label for="fileUpload" class="custom-file-upload">
+                        <img src="{% static 'images/attach_icon.png' %}" alt="Attach">
+                    </label>
+                                
+                    <input 
+                        type="text-area" 
+                        name="user_message" 
+                        placeholder="تفضل بتقديم سؤالك للمساعد الذكي لمركزنا" 
+                        dir="rtl" 
+                        style="flex: 1; border-radius: 30px; padding: 0.8rem; border: 1px solid #ddd;"
+                    >
                 </div>
             </form>
-            
         </div>
     </div>
 
@@ -262,6 +351,25 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 <script>
+    // JavaScript to add/remove the "shrink" class on scroll
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('shrink');
+        } else {
+            navbar.classList.remove('shrink');
+        }
+    });
+
+    // Mettre à jour le texte avec le nom du fichier sélectionné
+    const fileInput = document.getElementById('fileUpload');
+    const fileNameDisplay = document.getElementById('fileName');
+    
+    fileInput.addEventListener('change', function() {
+        const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "Aucun fichier sélectionné";
+        fileNameDisplay.textContent = fileName;
+    });
+
     {% comment %} $(document).on('submit', 'form[action$="clear_chat/"]', function (e) { {% endcomment %}
     $(document).ready(function () {
         $('form[action$="clear_chat/"]').on('submit', function (e) {
@@ -273,16 +381,16 @@
         });
     });
     
-        $('.suggestion-link').on('click', function (e) {
-            e.preventDefault(); // Prevent default link behavior
+    $('.suggestion-link').on('click', function (e) {
+        e.preventDefault(); // Prevent default link behavior
     
-            const question = $(this).data('question'); // Get the question from the link
-            const messageInput = $('input[name="user_message"]'); // Input field for user messages
+        const question = $(this).data('question'); // Get the question from the link
+        const messageInput = $('input[name="user_message"]'); // Input field for user messages
     
-            // Automatically send the question as a message
-            messageInput.val(question);
-            $('form[action$="index/"]').trigger('submit'); // Trigger form submission
-        });
+        // Automatically send the question as a message
+        messageInput.val(question);
+        $('form[action$="index/"]').trigger('submit'); // Trigger form submission
+    });
     
     
     $(document).ready(function () {
@@ -316,8 +424,6 @@
                 $('#loading-spinner').hide();
             });
         });
-    });
-    
-    
+    }); 
 </script>
 </html>
