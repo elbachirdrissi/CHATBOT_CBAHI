@@ -3,6 +3,7 @@ from django.contrib.staticfiles import finders
 import google.generativeai as genai
 import nltk
 import pandas as pd
+import openai
 
 file_path = finders.find('data/data.txt')
 if file_path:
@@ -11,12 +12,23 @@ if file_path:
 else:
     raise FileNotFoundError("File not found in static files.")
 
-genai.configure(api_key="AIzaSyBy9czHsgzweMg3Q_Hy1N9w5EzoxYprytQ")
+#genai.configure(api_key="AIzaSyBy9czHsgzweMg3Q_Hy1N9w5EzoxYprytQ")
+openai.api_key = "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"
 
 def query_gpt(prompt):
-    model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-    response = model.generate_content(prompt)
-    return response.text
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "Tu es un assistant utile."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=6000,  # Limite de mots pour la réponse
+            temperature=0.7  # Contrôle la créativité
+        )
+        return response["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        return f"Erreur : {e}"
 
 def clear_chat(request):
     if request.method == 'POST':

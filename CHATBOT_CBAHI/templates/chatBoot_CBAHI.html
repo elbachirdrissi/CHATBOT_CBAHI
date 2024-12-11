@@ -266,13 +266,13 @@
         <div class="navbar-container">
             <div class="nav-content">
                 <div class="title-container">
-                    <h3 class="nav-title">المركز السعودي لاعتماد المنشآت الصحية</h3>
+                    <h3 class="nav-title">MedicomPlaii</h3>
                     <h4 class="nav-subtitle">Saudi Central Board for Accreditation of Healthcare Institutions</h4>
                 </div>
 
                 <div class="logo-container-2">
                     <div class="logo-box-2">
-                        <img src="{% static 'images/cbahi.png' %}" alt="logo_1" class="img-fluid nav-logo">
+                        <img src="{% static 'images/icon_chat_cbahi.jpeg' %}" alt="logo_1" class="img-fluid nav-logo">
                     </div>
                     <div class="logo-box-2">
                         <img src="{% static 'images/logo_2.jpeg' %}" alt="logo_2" class="img-fluid nav-logo">
@@ -284,7 +284,7 @@
     
     <div class="container mt-4">
         <div class="title-container">
-            <p>مرحبا بك في مساعد الذكاء الاصطناعي الخاص بالمركز<br>يمكنكم من خلال المساعد الذكي للمركز الوصول للمعلومات بدقة وسهولة</p>
+            <p dir="rtl">مرحبا بك في مساعد الذكاء الاصطناعي MedicomPlaii<br>يمكنكم من خلال المساعد الذكي الوصول للمعلومات بدقة وسهولة</p>
         </div>
 
         <div class="chat-area">
@@ -295,7 +295,7 @@
                             {{ message.text|safe}}
                         </div>
                         {% if message.sender == 'bot' %}
-                            <img src="{% static 'images/icon_chat_cbahi.ico' %}" alt="Bot Icon" class="bot-icon">
+                            <img src="{% static 'images/icon_chat_cbahi.jpeg' %}" alt="Bot Icon" class="bot-icon">
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -330,11 +330,12 @@
                 <div class="message-box" style="display: flex; align-items: center; gap: 10px;">           
                     <button class="submit-button" type="submit" name="user_message">إرسال</button>
 
-                    <input type="file" id="fileUpload" name="file" accept="image/*, .pdf, .doc, .docx" style="display: none;">
+                    <input type="file" id="fileUpload" name="file" accept="image/*, .pdf, .doc, .docx" style="display: none;" onchange="updateFileName()">
                     <label for="fileUpload" class="custom-file-upload">
                         <img src="{% static 'images/attach_icon.png' %}" alt="Attach">
                     </label>
-                                
+                    <span id="fileNameDisplay">Aucun fichier choisi</span>
+
                     <input 
                         type="text-area" 
                         name="user_message" 
@@ -351,6 +352,19 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 <script>
+    function updateFileName() {
+        var fileInput = document.getElementById('fileUpload');
+        var fileNameDisplay = document.getElementById('fileNameDisplay');
+        
+        // Vérifie si un fichier est sélectionné
+        if (fileInput.files.length > 0) {
+            var fileName = fileInput.files[0].name;  // Récupère le nom du fichier
+            fileNameDisplay.textContent = fileName;  // Affiche le nom du fichier
+        } else {
+            fileNameDisplay.textContent = "Aucun fichier choisi";  // Affiche le message si aucun fichier
+        }
+    }
+
     // JavaScript to add/remove the "shrink" class on scroll
     window.addEventListener('scroll', () => {
         const navbar = document.querySelector('.navbar');
